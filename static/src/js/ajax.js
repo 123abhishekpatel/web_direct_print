@@ -5,24 +5,14 @@ var core = require('web.core');
 var download = require('web.download');
 var contentdisposition = require('web.contentdisposition');
 var ajax = require('web.ajax');
-const { session } = require('@web/session');
 var _t = core._t;
 let record_list = []
-var time = require('web.time');
 let xhr = new XMLHttpRequest();
-xhr.open('POST','/web_direct_print/data');
+xhr.open('GET','/web_direct_print/data');
 let data = new FormData();
 data.append('csrf_token', core.csrf_token);
-xhr.onload = () => {if (xhr.status === 200) record_list = xhr.response; console.log('-------xhr.response-',xhr.response);};
+xhr.onload = () => {if (xhr.status === 200) record_list = JSON.parse(xhr.response);};
 xhr.send(data);
-
-// $.ajax('/web_direct_print/data', _.extend({}, {}, {
-//     url: '/web_direct_print/data',
-//     dataType: 'json',
-//     type: 'POST',
-//     data: JSON.stringify({}, time.date_to_utc),
-//     contentType: 'application/json'
-// })).then((x)=> record_list = x);
 
 ajax.get_file = (options) => {
     var xhr = new XMLHttpRequest();
@@ -46,8 +36,20 @@ ajax.get_file = (options) => {
         if (xhr.status === 200 && mimetype !== 'text/html') {
             var header = (xhr.getResponseHeader('Content-Disposition') || '').replace(/;$/, '');
             var filename = header ? contentdisposition.parse(header).parameters.filename : null;
-            if(options.url && record_list.filter(x => options.url.include(x))){
+            if(mimetype == 'application/pdf' && record_list.filter(x => options.url.include(x)).length){
+              var blob = new Blob([req.response], {type: 'application/pdf'});
+              var blobURL = URL.createObjectURL(blob);
+              let iframe =  document.createElement('iframe');
+              document.body.appendChild(iframe);
 
+              iframe.style.display = 'none';
+              iframe.src = blobURL;
+              iframe.onload = function() {
+                setTimeout(function() {
+                  iframe.focus();
+                  iframe.contentWindow.print();
+                }, 1);
+              };
             }else download(xhr.response, filename, mimetype);
             if (options.success) { options.success(); }
             return true;
