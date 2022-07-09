@@ -1,1 +1,1 @@
-python3.6 /home/potter/odoo/odoo-12.0/odoo-bin --addons=/home/potter/odoo/odoo-12.0/addons -d v12_web_direct_print
+python3.6 /home/potter/odoo/odoo-12.0/odoo-bin --addons=/home/potter/odoo/odoo-12.0/addons,/home/potter/github/web_direct_print -d v12_web_direct_print -u web_direct_print

@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Web Direct Print">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/web_direct_print/static/src/js/ajax.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

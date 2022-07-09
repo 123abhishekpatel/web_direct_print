@@ -6,15 +6,10 @@
     'summary': '',
     'description': ''' ''',
     'depends': ['base'],
-    'data': ['views/ir_actions_report.xml'],
+    'data': ['views/ir_actions_report.xml','views/assets.xml'],
     'images': ['static/description/banner.gif'],
     'license': 'OPL-1',
     'application': False,
     'installable': True,
     'auto_install': False,
-    'assets': {
-        'web.assets_backend': [
-            'web_direct_print/static/src/js/ajax.js',
-        ],
-    },
 }
